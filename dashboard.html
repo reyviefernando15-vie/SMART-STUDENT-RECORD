@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html" style="color: #ffb347;">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Dashboard Overview</h1>
+    <p class="hero-description">
+      Quick overview of your student records, enrollment queue, and recent actions.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- DASHBOARD OVERVIEW -->
+        <div class="card">
+          <div class="card-title">Dashboard</div>
+          <p class="card-subtitle">Quick overview of the system</p>
+
+          <!-- Top actions (Add, View, Sort, Search, Queue, Undo) -->
+          <div class="form-actions" style="margin-top: 0; margin-bottom: 20px;">
+            <a href="add.html"><button type="button" class="btn-ghost">Add</button></a>
+            <button type="button" class="btn-ghost" onclick="viewAllStudents()">View</button>
+            <a href="sortgrade.html"><button type="button" class="btn-ghost">Sort</button></a>
+            <a href="search.html"><button type="button" class="btn-ghost">Search</button></a>
+            <a href="enrollment.html"><button type="button" class="btn-ghost">Enrollment Queue</button></a>
+            <a href="undo.html"><button type="button" class="btn-ghost">Undo Action</button></a>
+          </div>
+
+          <!-- Stats similar to QUICK OVERVIEW in wireframe -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-label">Total Students</div>
+              <div class="stat-value" id="totalStudents">0</div>
+              <div class="stat-mini">currently in records</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Queue Count</div>
+              <div class="stat-value" id="queueCount">0</div>
+              <div class="stat-mini">waiting for enrollment</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Last Action</div>
+              <div class="stat-value" id="lastAction">No Action</div>
+              <div class="stat-mini">Undo available</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Check if logged in
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'logIn.html';
+    }
+    
+    // Update dashboard stats
+    function updateDashboard() {
+      const students = JSON.parse(localStorage.getItem('students') || '[]');
+      const queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+      const history = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      
+      document.getElementById('totalStudents').textContent = students.length;
+      document.getElementById('queueCount').textContent = queue.length;
+      
+      if (history.length > 0) {
+        const lastAction = history[history.length - 1];
+        let actionText = '';
+        switch (lastAction.type) {
+          case 'add': actionText = 'Added Record'; break;
+          case 'edit': actionText = 'Edited Record'; break;
+          case 'delete': actionText = 'Deleted Record'; break;
+          case 'queue_add': actionText = 'Added to Queue'; break;
+          case 'queue_process': actionText = 'Processed Queue'; break;
+          case 'sort': actionText = 'Sorted Grades'; break;
+          default: actionText = 'Action';
+        }
+        document.getElementById('lastAction').textContent = actionText;
+      } else {
+        document.getElementById('lastAction').textContent = 'No Action';
+      }
+    }
+    
+    updateDashboard();
+  </script>
+</body>
+</html>
+

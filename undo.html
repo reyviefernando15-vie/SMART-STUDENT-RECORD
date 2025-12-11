@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Undo Action - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+    }
+    .form-field .form-label {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html" style="color: #ffb347;">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Undo Action</h1>
+    <p class="hero-description">
+      Revert the most recent action using Stack data structure (LIFO - Last In, First Out).
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- UNDO ACTION (STACK) -->
+        <div class="card">
+          <div class="card-title">Undo Action (Stack)</div>
+          <p class="card-subtitle">Revert the most recent modification</p>
+
+          <div class="form-field">
+            <label class="form-label">Last Action</label>
+            <textarea id="undoDisplay" readonly>No actions to undo.</textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-primary" onclick="undoLastAction()" id="undoBtn">Undo Action</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Check if logged in
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'logIn.html';
+    }
+    
+    function updateUndoDisplay() {
+      const actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      const undoTextarea = document.getElementById('undoDisplay');
+      const undoBtn = document.getElementById('undoBtn');
+      
+      if (actionHistory.length === 0) {
+        undoTextarea.value = 'No actions to undo.';
+        undoBtn.disabled = true;
+        undoBtn.textContent = 'Undo Action';
+      } else {
+        const lastAction = actionHistory[actionHistory.length - 1];
+        let actionText = '';
+        
+        switch (lastAction.type) {
+          case 'add':
+            actionText = `Added Record: ${lastAction.studentData.name} (ID: ${lastAction.studentData.id})`;
+            undoBtn.textContent = 'Undo Add';
+            break;
+          case 'edit':
+            actionText = `Edited Record: ${lastAction.previousData.name} (ID: ${lastAction.studentId})`;
+            undoBtn.textContent = 'Undo Edit';
+            break;
+          case 'delete':
+            actionText = `Deleted Record: ${lastAction.studentName}`;
+            undoBtn.textContent = 'Undo Delete';
+            break;
+          case 'queue_add':
+            actionText = `Added to Queue: ${lastAction.studentName}`;
+            undoBtn.textContent = 'Undo Queue Add';
+            break;
+          case 'queue_process':
+            actionText = `Processed from Queue: ${lastAction.studentName}`;
+            undoBtn.textContent = 'Undo Queue Process';
+            break;
+          case 'sort':
+            actionText = `Sorted Grades using ${lastAction.algorithm}`;
+            undoBtn.textContent = 'Undo Sort';
+            break;
+          default:
+            actionText = 'Last Action';
+            undoBtn.textContent = 'Undo Action';
+        }
+        
+        undoTextarea.value = actionText;
+        undoBtn.disabled = false;
+      }
+    }
+    
+    function undoLastAction() {
+      let actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      
+      if (actionHistory.length === 0) {
+        alert('No actions to undo.');
+        return;
+      }
+      
+      // Stack: Pop the last action (LIFO)
+      const lastAction = actionHistory.pop();
+      
+      switch (lastAction.type) {
+        case 'add':
+          // Remove the added student
+          let students = JSON.parse(localStorage.getItem('students') || '[]');
+          const addIndex = students.findIndex(s => s.id === lastAction.studentData.id);
+          if (addIndex >= 0) {
+            students.splice(addIndex, 1);
+            localStorage.setItem('students', JSON.stringify(students));
+            alert(`Undone: Removed student ${lastAction.studentData.name}`);
+          }
+          break;
+          
+        case 'edit':
+          // Restore previous data
+          students = JSON.parse(localStorage.getItem('students') || '[]');
+          const editIndex = students.findIndex(s => s.id === lastAction.studentId);
+          if (editIndex >= 0 && lastAction.previousData) {
+            students[editIndex] = lastAction.previousData;
+            localStorage.setItem('students', JSON.stringify(students));
+            alert(`Undone: Restored student ${lastAction.previousData.name}`);
+          }
+          break;
+          
+        case 'delete':
+          // Restore deleted student
+          students = JSON.parse(localStorage.getItem('students') || '[]');
+          if (lastAction.studentData) {
+            students.push(lastAction.studentData);
+            localStorage.setItem('students', JSON.stringify(students));
+            alert(`Undone: Restored student ${lastAction.studentName}`);
+          }
+          break;
+          
+        case 'queue_add':
+          // Remove from queue
+          let queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+          const queueRemoveIndex = queue.findIndex(q => q.name === lastAction.studentName);
+          if (queueRemoveIndex >= 0) {
+            queue.splice(queueRemoveIndex, 1);
+            localStorage.setItem('enrollmentQueue', JSON.stringify(queue));
+            alert(`Undone: Removed ${lastAction.studentName} from queue`);
+          }
+          break;
+          
+        case 'queue_process':
+          // Add back to front of queue
+          queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+          queue.unshift({ name: lastAction.studentName });
+          localStorage.setItem('enrollmentQueue', JSON.stringify(queue));
+          alert(`Undone: Added ${lastAction.studentName} back to queue`);
+          break;
+          
+        default:
+          alert('Undo completed.');
+      }
+      
+      localStorage.setItem('actionHistory', JSON.stringify(actionHistory));
+      updateUndoDisplay();
+    }
+    
+    // Initialize display
+    updateUndoDisplay();
+  </script>
+</body>
+</html>
+

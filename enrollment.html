@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Enrollment Queue - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .form-field .form-label {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html" style="color: #ffb347;">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Enrollment Queue (FCFS)</h1>
+    <p class="hero-description">
+      Manage student enrollment using First-Come-First-Served (FCFS) queue data structure.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- ENROLLMENT QUEUE (FCFS) -->
+        <div class="card">
+          <div class="card-title">Enrollment Queue (FCFS)</div>
+          <p class="card-subtitle">First-Come, First-Served processing of students</p>
+
+          <div class="form-field">
+            <label class="form-label">Current Queue</label>
+            <textarea id="queueDisplay" readonly>Queue is empty.</textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-primary" onclick="addToQueue()">Add to Queue</button>
+            <button type="button" class="btn-ghost" onclick="processNextInQueue()">Process Next</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Check if logged in
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'logIn.html';
+    }
+    
+    function updateQueueDisplay() {
+      const queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+      const queueTextarea = document.getElementById('queueDisplay');
+      
+      if (queue.length === 0) {
+        queueTextarea.value = 'Queue is empty.';
+      } else {
+        queueTextarea.value = queue.map((item, index) => `${index + 1}. ${item.name}`).join('\n');
+      }
+    }
+    
+    function addToQueue() {
+      const name = prompt('Enter student name to add to enrollment queue:');
+      if (name && name.trim()) {
+        let queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+        let actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+        
+        queue.push({ name: name.trim() });
+        
+        // Add to undo stack
+        actionHistory.push({
+          type: 'queue_add',
+          studentName: name.trim()
+        });
+        
+        localStorage.setItem('enrollmentQueue', JSON.stringify(queue));
+        localStorage.setItem('actionHistory', JSON.stringify(actionHistory));
+        
+        updateQueueDisplay();
+        alert(`${name} added to enrollment queue.`);
+      }
+    }
+    
+    function processNextInQueue() {
+      let queue = JSON.parse(localStorage.getItem('enrollmentQueue') || '[]');
+      
+      if (queue.length === 0) {
+        alert('Queue is empty. No students to process.');
+        return;
+      }
+      
+      // FCFS: Remove from front of queue (shift)
+      const processed = queue.shift();
+      let actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      
+      // Add to undo stack
+      actionHistory.push({
+        type: 'queue_process',
+        studentName: processed.name
+      });
+      
+      localStorage.setItem('enrollmentQueue', JSON.stringify(queue));
+      localStorage.setItem('actionHistory', JSON.stringify(actionHistory));
+      
+      alert(`Processed: ${processed.name}`);
+      updateQueueDisplay();
+    }
+    
+    // Initialize display
+    updateQueueDisplay();
+  </script>
+</body>
+</html>
+

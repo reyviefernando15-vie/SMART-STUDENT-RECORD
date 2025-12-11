@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+    }
+    .form-grid {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Login to Access</h1>
+    <p class="hero-description">
+      Sign in to manage student records, sort grades, search students, manage enrollment queue, and more.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- LOGIN -->
+        <div class="card">
+          <div class="card-title">Login</div>
+          <p class="card-subtitle">Sign in to manage student records</p>
+
+          <form id="loginForm">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required />
+              </div>
+              <div class="form-field">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Handle login form
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (username && password) {
+        // Store login status
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('username', username);
+        
+        // Initialize sample data if not exists
+        if (!localStorage.getItem('students')) {
+          initializeSampleData();
+        }
+        
+        alert('Login successful! Welcome to Smart Student Record System.');
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Please enter username and password.');
+      }
+    });
+  </script>
+</body>
+</html>
+

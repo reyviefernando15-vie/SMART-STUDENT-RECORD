@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add/Edit Student - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .form-grid {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html" style="color: #ffb347;">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Add / Edit Student</h1>
+    <p class="hero-description">
+      Create new student records or update existing ones. Fill in student ID, name, course, and grades.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- ADD / EDIT STUDENT -->
+        <div class="card">
+          <div class="card-title">Add / Edit Student</div>
+          <p class="card-subtitle">Create or update a student record</p>
+
+          <form id="addEditForm">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Student ID</label>
+                <input type="text" id="studentId" placeholder="e.g., 2023-002" required />
+              </div>
+              <div class="form-field">
+                <label class="form-label">Student Name</label>
+                <input type="text" id="studentName" placeholder="e.g., Ana Santos" required />
+              </div>
+              <div class="form-field">
+                <label class="form-label">Course / Year</label>
+                <input type="text" id="course" placeholder="e.g., BSCS 2nd Year" required />
+              </div>
+              <div class="form-field">
+                <label class="form-label">Grades</label>
+                <input type="text" id="grades" placeholder="e.g., 89.5, 92.1, 94.0" />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" onclick="addGradeHint()">+ Add Grade Field</button>
+              <button type="submit" class="btn-primary">Save</button>
+              <button type="reset" class="btn-ghost">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Check if logged in
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'logIn.html';
+    }
+    
+    function addGradeHint() {
+      const gradesInput = document.getElementById('grades');
+      const currentValue = gradesInput.value.trim();
+      if (currentValue) {
+        gradesInput.value = currentValue + ', ';
+      } else {
+        alert('Enter grades separated by commas (e.g., 89.5, 92.1, 94.0)');
+      }
+      gradesInput.focus();
+    }
+    
+    document.getElementById('addEditForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const studentId = document.getElementById('studentId').value.trim();
+      const studentName = document.getElementById('studentName').value.trim();
+      const course = document.getElementById('course').value.trim();
+      const gradesInput = document.getElementById('grades').value.trim();
+      
+      if (!studentId || !studentName || !course) {
+        alert('Please fill in all required fields (ID, Name, Course).');
+        return;
+      }
+      
+      // Parse grades
+      const grades = gradesInput ? gradesInput.split(',').map(g => parseFloat(g.trim())).filter(g => !isNaN(g)) : [];
+      
+      // Get students from localStorage
+      let students = JSON.parse(localStorage.getItem('students') || '[]');
+      let actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      
+      // Check if student exists (for edit)
+      const existingIndex = students.findIndex(s => s.id === studentId);
+      
+      // Save previous state for undo
+      const previousState = existingIndex >= 0 ? JSON.parse(JSON.stringify(students[existingIndex])) : null;
+      
+      if (existingIndex >= 0) {
+        // Edit existing student
+        students[existingIndex] = {
+          id: studentId,
+          name: studentName,
+          course: course,
+          grades: grades.length > 0 ? grades : students[existingIndex].grades
+        };
+        
+        // Add to undo stack
+        actionHistory.push({
+          type: 'edit',
+          studentId: studentId,
+          previousData: previousState,
+          newData: JSON.parse(JSON.stringify(students[existingIndex]))
+        });
+        
+        alert(`Student ${studentName} updated successfully!`);
+      } else {
+        // Add new student
+        const newStudent = {
+          id: studentId,
+          name: studentName,
+          course: course,
+          grades: grades
+        };
+        students.push(newStudent);
+        
+        // Add to undo stack
+        actionHistory.push({
+          type: 'add',
+          studentData: JSON.parse(JSON.stringify(newStudent))
+        });
+        
+        alert(`Student ${studentName} added successfully!`);
+      }
+      
+      // Save back to localStorage
+      localStorage.setItem('students', JSON.stringify(students));
+      localStorage.setItem('actionHistory', JSON.stringify(actionHistory));
+      
+      // Reset form
+      document.getElementById('addEditForm').reset();
+      
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Student Record Management System (SRMS)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Add • Sort • Search • Queue • Undo</h1>
+    <p class="hero-description">
+      A GUI-based system for organizing student records: add and edit information,
+      sort grades, search students by name or ID, manage an enrollment queue (FCFS),
+      and undo the last action using a stack-like history. Ideal for instructors who
+      want fast and organized access to student academic data.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="content-grid">
+      <section>
+        <!-- QUICK LINKS -->
+        <div class="card">
+          <div class="card-title">Welcome to Smart Student Record System</div>
+          <p class="card-subtitle">Choose a feature to get started</p>
+
+          <div class="form-actions" style="flex-direction: column; gap: 15px; margin-top: 20px;">
+            <a href="logIn.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-primary" style="width: 100%;">🔐 Login</button>
+            </a>
+            <a href="dashboard.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">📊 Dashboard</button>
+            </a>
+            <a href="add.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">➕ Add / Edit Student</button>
+            </a>
+            <a href="sortgrade.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">🔀 Sort Grades</button>
+            </a>
+            <a href="search.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">🔍 Search Student</button>
+            </a>
+            <a href="enrollment.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">📋 Enrollment Queue</button>
+            </a>
+            <a href="undo.html" style="text-decoration: none; width: 100%;">
+              <button type="button" class="btn-ghost" style="width: 100%;">↩️ Undo Action</button>
+            </a>
+          </div>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="card">
+          <div class="card-title">System Features</div>
+          <p class="card-subtitle">Data Structures & Algorithms Implementation</p>
+          
+          <div style="margin-top: 20px;">
+            <div style="margin-bottom: 15px;">
+              <strong>📚 Student Management</strong>
+              <p style="font-size: 12px; color: #666; margin-top: 5px;">Add, edit, and manage student records with grades</p>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <strong>🔀 Sorting Algorithms</strong>
+              <p style="font-size: 12px; color: #666; margin-top: 5px;">Bubble Sort, Selection Sort, Insertion Sort</p>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <strong>🔍 Binary Search</strong>
+              <p style="font-size: 12px; color: #666; margin-top: 5px;">Search students by name or ID efficiently</p>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <strong>📋 Queue (FCFS)</strong>
+              <p style="font-size: 12px; color: #666; margin-top: 5px;">First-Come-First-Served enrollment queue</p>
+            </div>
+            <div>
+              <strong>↩️ Stack (Undo)</strong>
+              <p style="font-size: 12px; color: #666; margin-top: 5px;">LIFO-based undo functionality</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+</body>
+</html>

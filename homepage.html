@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .homepage-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 100px 40px;
+      text-align: center;
+    }
+    .homepage-hero .hero-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .homepage-hero .hero-title {
+      font-size: 64px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: #fff;
+      letter-spacing: -2px;
+    }
+    .homepage-hero .hero-description {
+      max-width: 800px;
+      margin: 0 auto 50px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.95);
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+    .feature-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #e5e7eb;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1f2933;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+    .cta-section {
+      background: white;
+      border-radius: 12px;
+      padding: 50px;
+      text-align: center;
+      margin: 40px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .cta-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    .cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+    .cta-secondary {
+      background: white;
+      color: #667eea;
+      padding: 15px 40px;
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    .cta-secondary:hover {
+      background: #667eea;
+      color: white;
+    }
+    .stats-section {
+      background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+      padding: 60px 40px;
+      margin-top: 40px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    .stat-label {
+      font-size: 16px;
+      color: #666;
+      font-weight: 500;
+    }
+    @media (max-width: 768px) {
+      .homepage-hero .hero-title {
+        font-size: 40px;
+      }
+      .homepage-hero {
+        padding: 60px 20px;
+      }
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .cta-primary, .cta-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html" style="color: #ffb347;">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="homepage-hero">
+    <p class="hero-subtitle">Welcome to</p>
+    <h1 class="hero-title">Smart Student Record Management System</h1>
+    <p class="hero-description">
+      A comprehensive GUI-based system for organizing student records efficiently. 
+      Manage student data, sort grades with advanced algorithms, search instantly, 
+      handle enrollment queues, and undo actions seamlessly. Perfect for educational 
+      institutions seeking an organized and efficient record management solution.
+    </p>
+    <div class="cta-buttons">
+      <a href="logIn.html" class="cta-primary">Get Started →</a>
+      <a href="#features" class="cta-secondary">Learn More</a>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    
+    <!-- FEATURES SECTION -->
+    <div id="features">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h2 style="font-size: 36px; font-weight: 700; color: #1f2933; margin-bottom: 15px;">System Features</h2>
+        <p style="font-size: 16px; color: #666; max-width: 600px; margin: 0 auto;">
+          Explore powerful features built with Data Structures & Algorithms concepts
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>Student Management</h3>
+          <p>Add, edit, and manage student records with comprehensive information including ID, name, course, and grades. Keep all student data organized in one place.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔀</div>
+          <h3>Sorting Algorithms</h3>
+          <p>Apply three powerful sorting algorithms - Bubble Sort, Selection Sort, and Insertion Sort - to organize student grades in ascending or descending order.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Binary Search</h3>
+          <p>Find students instantly using efficient Binary Search algorithm. Search by name or student ID with fast, optimized performance.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Enrollment Queue</h3>
+          <p>Manage student enrollment using First-Come-First-Served (FCFS) queue data structure. Process enrollments in order of arrival.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">↩️</div>
+          <h3>Undo Functionality</h3>
+          <p>Revert actions easily with Stack-based undo system. Implemented using LIFO (Last In, First Out) principle for reliable action history.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Dashboard Analytics</h3>
+          <p>Get real-time insights with comprehensive dashboard showing total students, queue status, and recent actions at a glance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA SECTION -->
+    <div class="cta-section">
+      <h2 style="font-size: 32px; font-weight: 700; color: #1f2933; margin-bottom: 15px;">Ready to Get Started?</h2>
+      <p style="font-size: 16px; color: #666; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Start managing your student records efficiently. Login to access all features and begin organizing your data.
+      </p>
+      <div class="cta-buttons">
+        <a href="logIn.html" class="cta-primary">Login Now</a>
+        <a href="dashboard.html" class="cta-secondary">View Dashboard</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STATS SECTION -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">6+</div>
+        <div class="stat-label">Powerful Features</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Sorting Algorithms</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Data Persistence</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">DSA</div>
+        <div class="stat-label">Algorithms Implemented</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+    <br>
+    <span style="font-size: 11px; color: #999;">Built for New Era University</span>
+  </footer>
+
+</body>
+</html>
+

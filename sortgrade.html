@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sort Grades - Smart Student Record Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .card-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .card-title, .card-subtitle {
+      text-align: center;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: center;
+    }
+    .form-field .form-label {
+      text-align: left;
+    }
+    .form-field > div {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SMART STUDENT RECORD</div>
+    <nav>
+      <a href="homepage.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="add.html">Add / Edit</a>
+      <a href="sortgrade.html" style="color: #ffb347;">Sort Grades</a>
+      <a href="search.html">Search</a>
+      <a href="enrollment.html">Enrollment Queue</a>
+      <a href="undo.html">Undo</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <p class="hero-subtitle">Smart Student Record Management System</p>
+    <h1 class="hero-title">Sort Grades</h1>
+    <p class="hero-description">
+      Apply sorting algorithms (Bubble Sort, Selection Sort, Insertion Sort) to organize student grades.
+    </p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="card-container">
+      <section>
+        <!-- SORT GRADES -->
+        <div class="card">
+          <div class="card-title">Sort Grades</div>
+          <p class="card-subtitle">Apply a sorting algorithm to student grades</p>
+
+          <form id="sortForm">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Select Algorithm</label>
+                <select id="algorithm">
+                  <option>Bubble Sort</option>
+                  <option>Selection Sort</option>
+                  <option>Insertion Sort</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label">Order</label>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                  <label style="font-size: 13px;">
+                    <input type="radio" name="order" value="" checked /> Ascending
+                  </label>
+                  <label style="font-size: 13px;">
+                    <input type="radio" name="order" value="desc" /> Descending
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-field" style="margin-top: 10px;">
+              <label class="form-label">Result</label>
+              <textarea id="sortResult" readonly>No grades to sort yet.</textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Sort Now</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Smart Student Record Management System (SRMS) • Data Structures &amp; Algorithms Project
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Check if logged in
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'logIn.html';
+    }
+    
+    document.getElementById('sortForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const algorithm = document.getElementById('algorithm').value;
+      const checkedRadio = document.querySelector('input[type="radio"]:checked');
+      const ascending = checkedRadio && checkedRadio.value === '';
+      
+      // Get all grades from students
+      const students = JSON.parse(localStorage.getItem('students') || '[]');
+      let allGrades = [];
+      students.forEach(student => {
+        if (student.grades && student.grades.length > 0) {
+          allGrades = allGrades.concat(student.grades);
+        }
+      });
+      
+      if (allGrades.length === 0) {
+        document.getElementById('sortResult').value = 'No grades to sort. Add students with grades first.';
+        return;
+      }
+      
+      // Remove duplicates and sort
+      allGrades = [...new Set(allGrades)];
+      
+      let sortedGrades;
+      
+      switch (algorithm) {
+        case 'Bubble Sort':
+          sortedGrades = bubbleSort([...allGrades], ascending);
+          break;
+        case 'Selection Sort':
+          sortedGrades = selectionSort([...allGrades], ascending);
+          break;
+        case 'Insertion Sort':
+          sortedGrades = insertionSort([...allGrades], ascending);
+          break;
+        default:
+          sortedGrades = [...allGrades].sort((a, b) => ascending ? a - b : b - a);
+      }
+      
+      document.getElementById('sortResult').value = sortedGrades.join(', ');
+      
+      // Save to undo stack
+      let actionHistory = JSON.parse(localStorage.getItem('actionHistory') || '[]');
+      actionHistory.push({
+        type: 'sort',
+        algorithm: algorithm,
+        original: allGrades,
+        sorted: sortedGrades
+      });
+      localStorage.setItem('actionHistory', JSON.stringify(actionHistory));
+    });
+  </script>
+</body>
+</html>
+
